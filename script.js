@@ -3,9 +3,25 @@ const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader');
+
+// Show Loading spinner
+function showLoadingSpinner() {
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
+
+// Hide Loading spinner
+function removeLoadingSpinner() {
+    if(!loader.hidden) {
+        quoteContainer.hidden = false;
+        loader.hidden = true;
+    }
+}
 // Get Quote From API
 
 async function getQuote() {
+    showLoadingSpinner();
     const proxyUrl = 'https://polar-castle-09795.herokuapp.com/'
     const apiUrl= 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
     try{
@@ -26,6 +42,8 @@ async function getQuote() {
             }
         
         quoteText.innerText = data.quoteText;
+        // Stop Loader and show quote
+        removeLoadingSpinner();
        
     }
     catch (error){
@@ -37,7 +55,7 @@ async function getQuote() {
 function tweetQuote() {
     const quote = quoteText.innerText;
     const author = authorText.innerText;
-    const twitterUrl = `http://twitter.com/intent/tweet?text=${quote} \n - ${author}` ;
+    const twitterUrl = `http://twitter.com/intent/tweet?text=${quote}  - ${author}` ;
     window.open(twitterUrl, '_blank');
 }
 
